@@ -1,0 +1,91 @@
+import java.util.Scanner;
+public class Main {
+	public static void main(String [ ] args)
+	{
+		boolean game = true;
+		boolean playerW = true;
+		Board B = new Board();
+		Scanner in = new Scanner(System.in);
+		int curx = 0;
+		int cury = 0;
+		while(game){
+			System.out.println(B);
+			if(playerW){
+				System.out.println("White player's move");
+			} else{
+				System.out.println("Black player's move");
+			}
+			boolean validPiece = false;
+			Piece curr = new Piece();
+			Blank blnk = new Blank(-1,-1,false);
+			Bishop bshp = new Bishop(-1,-1,false);
+			King king = new King(-1,-1,false);
+			Knight knght = new Knight(-1,-1,false);
+			Pawn pawn = new Pawn(-1,-1,false);
+			Queen queen = new Queen(-1,-1,false);
+			Rook rook = new Rook(-1,-1,false);
+			while(!validPiece){
+				System.out.println("Type in coordinates of piece you want to move.");
+				curx = in.nextInt();
+				cury = in.nextInt();
+				curr = (B.get(curx, cury));
+				if(!curr.getClass().equals(blnk.getClass())){
+					if(curr.color == playerW){
+						validPiece = true;
+					}
+				}
+
+			}
+			int nxtx = 0;
+			int nxty = 0;
+			Piece nxt = new Piece();
+			boolean validmove = false;
+			while(!validmove){
+				System.out.println("Type in the coordinates of the place you want your piece to move to.");
+				nxtx = in.nextInt();
+				nxty = in.nextInt();
+				nxt = (B.get(nxtx, nxty));
+				if(nxt.getClass().equals(blnk.getClass())){
+					if(curr.getClass().equals(pawn.getClass())){
+						if(curr.color == true){
+							if(curx == nxtx){
+								if(cury == nxty - 1){
+									validmove = true;
+								}
+							} else if(cury == 1){
+								if(curx == nxtx){
+									if(nxty == 3){
+										validmove = true;
+									}
+								}
+							}
+						}else if(curr.color == false){
+							if(curx == nxtx){
+								if(cury == nxty + 1){
+									validmove = true;
+								}
+							}else if(cury == 6){
+								if(curx == nxtx){
+									if(cury == nxty + 2){
+										validmove = true;
+									}
+								}
+							}
+						}
+					} else {
+						validmove = true;
+					}
+				}else if(nxt.color != playerW){
+					//check if valid move
+					validmove = true;
+				}
+			}
+			B.set(nxtx, nxty, curr);
+			B.set(curx, cury, blnk);
+			if(playerW){
+				playerW = false;
+			}else
+				playerW = true;
+		}
+	}
+}
